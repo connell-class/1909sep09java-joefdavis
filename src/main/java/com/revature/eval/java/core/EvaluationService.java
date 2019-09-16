@@ -31,7 +31,22 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String a=phrase.substring(0,1);
+		char b;
+		for(int i=0;i<phrase.length();i++) {
+			b=phrase.charAt(i);
+		
+			
+			if(b==' ' || b=='-') {
+				a=a+Character.toString(phrase.charAt(i+1));
+			}
+		
+			
+			
+			
+		}
+		
+		return a;
 	}
 
 	/**
@@ -85,16 +100,23 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			if(sideOne==sideTwo && sideTwo==sideThree)
+				return true;
+			
 			return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			if(sideOne==sideTwo || sideOne==sideThree || sideTwo==sideThree)
+				return true;
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			if(sideOne!=sideTwo && sideOne!=sideThree && sideTwo!=sideThree)
+				return true;
 			return false;
 		}
 
@@ -117,7 +139,41 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int score=0;
+		char b;
+		for (int i=0;i<string.length();i++) {
+			b=string.charAt(i);
+			
+			if(b=='A' || b=='E' || b=='I' || b=='O' || b=='U' || b=='L' || b=='N'
+					|| b=='R' || b=='S' || b=='T' || b=='a' || b=='e' || b=='i' || 
+					b=='o' || b=='u' || b=='l' || b=='n'
+					|| b=='r' || b=='s' || b=='t') {
+				score=score+1;
+				}
+			if(b=='D' || b=='G' || b=='d' || b=='g') {
+				score=score+2;
+			}
+			if(b=='B' || b=='C' || b=='M' || b=='P' || 
+					b=='b' || b=='c' || b=='m' || b=='p') {
+				score=score+3;
+			}
+			if(b=='F' || b=='H' || b=='V' || b=='W' || b=='Y' ||
+					b=='f' || b=='h' || b=='v' || b=='w' || b=='y') {
+				score=score+4;
+			}
+			if(b=='K' || b=='k') {
+				score=score+5;
+			}
+			if(b=='J' || b=='X' || b=='j' || b=='x') {
+				score=score+8
+;			}
+			if(b=='Q' || b=='q' || b=='Z' || b=='z') {
+				score=score+10;
+			}
+			
+			
+		}
+		return score;
 	}
 
 	/**
@@ -153,7 +209,29 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		char b;
+		String number="";
+		
+		for(int i=0;i<string.length();i++) {
+		b=string.charAt(i);
+		
+		if(Character.isDigit(b)){
+		number=number+Character.toString(b);
+		
+		}
+		
+		
+		}
+		
+		if(number.charAt(0)=='1' && number.length()==11) {
+			number=number.substring(1);
+			return number;
+		}
+		
+		if(number.length()!=10) {
+			return null;
+		}
+		return number;
 	}
 
 	/**
@@ -167,6 +245,9 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
+		
+		string=" ";
+		int wc=0;
 		return null;
 	}
 
@@ -267,7 +348,31 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
+		int a=input;
+		if(a==armStrong(input)) {
+			return true;
+		}
+		
 		return false;
+	}
+	
+	public int armStrong(int input) {
+		
+		String as=Integer.toString(input);
+		int arm=0;
+		int number;
+		char p;
+		for(int i=0;i<as.length();i++) {
+			p=as.charAt(i);
+			number=Character.getNumericValue(p);
+			number=(int)Math.pow(number, as.length());
+			arm=arm+number;
+			
+			
+		}
+		
+		
+		return arm;
 	}
 
 	/**
@@ -340,6 +445,38 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
+		if(i==1) {
+			return 2;
+		}
+		if(i==2) {
+			return 3;
+		}
+		if(i==3) {
+			return 5;
+		}
+		if(i==4) {
+			return 7;
+		}
+		if(i==5) {
+			return 11;
+		}
+		
+		int prime=0;
+		int counter=5;
+		if(i>5) {
+		for(int j=12;j<100000000;j++) {
+				
+			if(j%2!=0 && j%3!=0 && j%5!=0 && j%7!=0 && j%11!=0) {
+				prime=j;
+				counter++;
+			}
+			if(counter==i) {
+				return prime;
+			}
+			
+		}
+		}
+		
 		return 0;
 	}
 
@@ -465,7 +602,22 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int sum=0;
+		boolean already=false;
+		
+		for(int j=set[0];j<i;j++) {
+			already=false;
+			for(int k=0;k<set.length;k++) {
+				
+				if(j%set[k]==0 && already==false) {
+					sum=sum+j;
+					System.out.println(sum);
+					already=true;
+				}
+				
+			}
+		}
+		return sum;
 	}
 
 	/**
@@ -506,7 +658,88 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
+		string=convert(string);
+		char place=' ';
+		for(int j=0;j<string.length();j++) {
+			place=string.charAt(j);
+			if(Character.isDigit(place)==false && place!=' '){
+				return false;
+			}
+		}
+		int sum=0;
+		int num;
+		for(int i=0;i<string.length();i++) {
+			if(Character.isDigit(string.charAt(i))) {
+			num=Character.getNumericValue(string.charAt(i));
+			sum=sum+num;
+			System.out.print(num);
+			}
+			else {
+				System.out.print(" ");
+			}
+		}
+		if(sum%10==0) {
+			return true;
+		}
+		
+		
+		
 		return false;
+	}
+	
+	public String convert(String string) {
+		String [] number = new String[string.length()];
+		String [] reform= new String[string.length()];
+		//put string into an array
+		for(int k=0;k<string.length();k++) {
+			reform[k]=string.substring(k, k+1);
+		}
+		int a=0;
+		int b=0;
+		char place;
+		int p=0;
+		String twoDigs;
+		char first;
+		char second;
+		Boolean everySecond=false;
+		//sec makes sure every second digit is changed
+		int sec=2;
+		String num="";
+		int index=string.length()-1;
+		for (int i=string.length()-2;i>=0;i--) {
+			place=string.charAt(i);
+			
+			if(Character.isDigit(place) && sec%2==0) {
+			p=Character.getNumericValue(place);
+			System.out.print(p);
+			if(p*2>9 ) {
+				p=p*2;
+				twoDigs=Integer.toString(p);
+				first=twoDigs.charAt(0);
+				second=twoDigs.charAt(1);
+				p=(Character.getNumericValue(first)+(Character.getNumericValue(second)));
+				reform[i]=Integer.toString(p);
+			}
+			else {
+				p=p*2;
+				reform[i]=Integer.toString(p);
+			}
+			
+			
+			
+		
+			}
+			if(Character.isDigit(place)) {
+				sec++;
+			}
+		}
+		System.out.println("");
+		for(int j=0;j<string.length();j++) {
+			num=num+reform[j];
+			System.out.print(reform[j]);
+		}
+		System.out.println(" ");
+		return num;
 	}
 
 	/**
@@ -538,7 +771,89 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int j=0;
+		int a=0;
+		int b=0;
+		int answer=0;
+		String sub="";
+		String num="";
+		char place=' ';
+		String function=null;
+		boolean isA=false;
+		boolean isB=false;
+		boolean func=false;
+		//for loop to read down the string
+		//while checking for numbers
+		//and the math function
+		for(int i=0;i<string.length();i++) {
+			j=i;
+			place=string.charAt(i);
+			sub=sub+place;
+			//check if number is negative
+			if(place=='-') {
+				num=num+place;
+			}
+			//checking for the first number
+			if(Character.isDigit(place) && isA==false) {
+				num=num+place;
+				while(Character.isDigit(string.charAt(j+1))) {
+					num=num+string.charAt(j+1);
+					j++;
+				}
+				a=Integer.parseInt(num);
+				isA=true; 
+				num="";
+				System.out.println(a);
+				place=string.charAt(i+1);
+			}
+			
+			//checking for the second number
+			if(Character.isDigit(place) && isA==true && (i+1!=string.length()) && isB==false && func==true) {
+				num=num+place;
+				while(Character.isDigit(string.charAt(j+1)) && isB==false) {
+					num=num+string.charAt(j+1);
+					j++;
+				}
+				b=Integer.parseInt(num);
+				isB=true;
+				System.out.println(b);
+			}
+			//check if string matches the math function words
+			
+			if((place=='d' || place=='D') && (string.charAt(i+1)=='i' || string.charAt(i+1)=='I')) {
+			function="/";	
+			func=true;
+			}
+			if((place=='a' || place=='A') && (string.charAt(i+1)=='d' || string.charAt(i+1)=='D')) {
+				function="+";	
+				func=true;
+				}
+			if((place=='S' || place=='s') && (string.charAt(i+1)=='u' || string.charAt(i+1)=='U')) {
+				function="-";
+				func=true;
+				}
+			if((place=='m' || place=='M') && (string.charAt(i+1)=='u' || string.charAt(i+1)=='U')) {
+				function="*";
+				func=true;
+				}
+			//add it all up
+			
+		}
+		if(function=="/") {
+			answer=a/b;
+		}
+		if(function=="+") {
+			answer=a+b;
+		}
+		if(function=="-") {
+			answer=a-b;
+		}
+		if(function=="*") {
+			answer=a*b;
+		}
+		
+		
+		return answer;
 	}
 
 }
