@@ -313,7 +313,7 @@ public class EvaluationService {
 	 * binary search is a dichotomic divide and conquer search algorithm.
 	 * 
 	 */
-	static class BinarySearch<T> {
+	 class BinarySearch<T> {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
@@ -543,7 +543,7 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			// TODO Write an implementation for this method declaration
+		
 //			int key=-3;
 			String ciph="";
 			char place;
@@ -1199,5 +1199,6 @@ public class EvaluationService {
 		
 		return answer;
 	}
-
+	}
 }
+
