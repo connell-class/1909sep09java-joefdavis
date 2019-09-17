@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -246,9 +247,35 @@ public class EvaluationService {
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
 		
-		string=" ";
-		int wc=0;
-		return null;
+		Map<String, Integer> map= new HashMap<>();
+		int count=1;
+		boolean white=false;
+		for(int t=0;t<string.length();t++) {
+			if(string.charAt(t)==' ') {
+//				System.out.println("space");
+				white=true;
+			}
+			
+			if(white==true) {
+		String [] s= string.split(" ");
+		if(s.length>1) {
+		for (int i=0;i<string.length();i++) {
+			count=1;
+			for (int j=i+1;j<string.length();j++) {
+				if(s[i]==s[j] && i<j) {
+					count++;
+				}
+				map.put(s[i],count);
+			}
+			
+		}
+		}
+			}
+		else {
+			map.put(string,1);
+		}
+			
+		return map;
 	}
 
 	/**
@@ -305,7 +332,7 @@ public class EvaluationService {
 
 		public void setSortedList(List<T> sortedList) {
 			this.sortedList = sortedList;
-		}
+		}}
 
 	}
 
@@ -328,7 +355,97 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+//		System.out.println("why");
+		
+		boolean white=false;
+		for(int t=0;t<string.length();t++) {
+			if(string.charAt(t)==' ') {
+//				System.out.println("space");
+				white=true;
+			}
+		}
+		
+		String [] s=string.split(" ");
+	
+		String end="ay";
+		boolean vowel=false;
+		String part;	
+		int size=s.length;
+//		System.out.println(size);
+	
+		//testing if my array worked and split the string
+//		for (int y=0;y<size;y++) {
+//			System.out.print(s[y]);
+//		}
+		if(white=true) {
+		for(int i=0;i<s.length;i++) {
+			vowel=false;
+			for(int j=0;j<s[i].length();j++) {
+				 if(s[i].substring(0,2).equalsIgnoreCase("qu") ){
+					s[i]=s[i].substring(2)+"quay";
+					j=s[i].length();
+				}
+				else if(s[i].substring(j,j+1).equalsIgnoreCase("a") || s[i].substring(j,j+1).equalsIgnoreCase("e") || s[i].substring(j,j+1).equalsIgnoreCase("0") || s[i].substring(j,j+1).equalsIgnoreCase("i")
+						|| s[i].substring(j,j+1).equalsIgnoreCase("u")) {
+					vowel=true;
+					if(j==0) {
+						s[i]+=end;
+						j=s[i].length();
+					}
+					
+					else {
+						part=s[i].substring(0,j);
+//						System.out.println(s[i].substring(0,j));
+						s[i]=s[i].substring(j)+ part + end;
+						j=s[i].length();
+					}
+					
+				}
+			}
+//put string back together
+			if(size==1) {
+				string=s[0];
+			}
+			else {
+				string="";
+				for(int k=0;k<size;k++) {
+					
+					
+					string=string+s[k] + " ";
+				}
+			}
+		
+		}
+		}
+		else {
+			
+			for (int index=0;index<string.length();index++) {
+				if( string.substring(index,index+1).equalsIgnoreCase("a") || string.substring(index,index+1).equalsIgnoreCase("e") || string.substring(index,index+1).equalsIgnoreCase("0") || string.substring(index,index+1).equalsIgnoreCase("i")
+						|| string.substring(index,index+1).equalsIgnoreCase("u")) {
+					 if(string.substring(0,2).equalsIgnoreCase("qu")) {
+						string=string.substring(2)+"quay";
+						index=string.length();
+					}
+				else if(index==0) {
+						string+=end;
+						index=string.length();
+					}
+					
+					else {
+						part=s[index].substring(0,index);
+						string=string.substring(index) + part + end;
+						index=string.length();
+					}
+					
+				}
+				
+			}
+			
+			
+		}
+		return string;
+		
+		
 	}
 
 	/**
@@ -426,7 +543,57 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			// TODO Write an implementation for this method declaration
+//			int key=-3;
+			String ciph="";
+			char place;
+			for(int i=0;i<string.length();i++) {
+				place=string.charAt(i);
+				//not at a space
+				if(place!=' ' && Character.isLetter(place)) {
+					//is it in between a&z
+					if(place >='a' && place<='z') {
+						
+					if(((char)place+key) >='a' && ((char)place+key) <='z') {
+						ciph+=((char)(place+key));
+						
+					}
+					else if(place+key<97) {
+						ciph+=((char)(place+key+26));
+					}
+					else {
+						ciph+=((char)(place+key-26));
+					}
+					}//is it between upper case alphabet
+					else if(place>='A' && place<='Z') {
+						
+					 if(((char)place+key) >='A' && ((char)place+key) <='Z') {
+						ciph+=((char)(place+key));
+						}
+					 else if(place+key<65) {
+						 ciph+=((char)(place+key+26));
+					 }
+					 else {
+						 ciph+=((char)(place+key-26));
+					 }
+					
+					}
+					else {
+						ciph+=((char)(place+key));
+					}
+					
+				}
+				else if(place==' ') {
+					ciph+=" ";
+				}
+				else if(Character.isDigit(place)) {
+					ciph+=place;
+				}
+				else {
+					ciph+=place;
+				}
+			}
+			return ciph;
 		}
 
 	}
@@ -514,7 +681,33 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			char place;
+			String s="";
+			int difference;
+			for(int i=0;i<string.length();i++) {
+				place=string.charAt(i);
+				
+				if(Character.isLetter(place)) {
+					if(place>='a' && place<='z') {
+						difference=place-97;
+						place=((char)(122-difference));
+						s+=place;
+						
+					}
+					else {
+						difference=place-65;
+						place=((char)(90-difference));
+						s+=place;
+					}
+					
+				}
+				else {
+					s+=place;
+				}
+				
+			}
+			
+			return s;
 		}
 
 		/**
@@ -525,9 +718,37 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			char place;
+			String s="";
+			int difference;
+			int count=0;
+			for(int i=0;i<string.length();i++) {
+				place=string.charAt(i);
+				if(count%5==0) {
+					s+=" ";
+					}
+				if(Character.isLetter(place)) {
+					if(place>='a' && place<='z') {
+						difference=122-place;
+						place=((char)(97+difference));
+						s+=place;
+						count++;
+					}
+					else {
+						difference=90-place;
+						place=((char)(65+difference));
+						s+=place;
+					}
+					
+				}
+				else {
+					s+=place;
+				}
+				
+			}
+			
+			return s;
 		}
-	}
 
 	/**
 	 * 15. The ISBN-10 verification process is used to validate book identification
