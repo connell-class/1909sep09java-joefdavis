@@ -738,10 +738,12 @@ public class EvaluationService {
 						difference=90-place;
 						place=((char)(65+difference));
 						s+=place;
+						count++;
 					}
 					
 				}
 				else {
+					count++;
 					s+=place;
 				}
 				
@@ -774,8 +776,34 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
-	}
+				int sum=0;
+				char place;
+				int count=10;
+				int temp;
+				for(int i=0;i<string.length();i++) {
+					place=string.charAt(i);
+					
+					if(Character.isDigit(place)) {
+						temp=Character.getNumericValue(place);
+						sum+=count*temp;
+						count--;
+					}
+					if(Character.isLetter(place) && count==1) {
+						sum+=count*10;
+						count--;
+					}
+				}
+				//case not enough numbers
+				if(count!=0) {
+					return false;
+				}
+		//System.out.println(count);		
+				if(sum%11==0) {
+					return true;
+				}
+				
+				return false;
+			}
 
 	/**
 	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
@@ -792,9 +820,104 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
-	}
-
+					boolean a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z=false;
+					a=z;
+					a=b=c=d=e=f=g=h=i=j=k=l=m=n=o=p=q=r=s=t=u=v=w=x=y=z;
+					char place;
+					
+					for(int index=0;index<string.length();index++) {
+						place=string.charAt(index);
+						if(place=='a') {
+							a=true;
+						}
+						if(place=='b') {
+							b=true;
+						}
+						if(place=='c') {
+							c=true;
+						}
+						if(place=='d') {
+							d=true;
+						}
+						if(place=='e') {
+							e=true;
+						}
+						if(place=='f') {
+							f=true;
+						}
+						if(place=='g') {
+							g=true;
+						}
+						if(place=='h') {
+							h=true;
+						}
+						if(place=='i') {
+							i=true;
+						}
+						if(place=='j') {
+							j=true;
+						}
+						if(place=='k') {
+							k=true;
+						}
+						if(place=='l') {
+							l=true;
+						}
+						if(place=='m') {
+							m=true;
+						}
+						if(place=='n') {
+							n=true;
+						}
+						if(place=='o') {
+							o=true;
+						}
+						if(place=='p') {
+							p=true;
+						}
+						if(place=='q') {
+							q=true;
+						}
+						if(place=='r') {
+							r=true;
+						}
+						if(place=='s') {
+							s=true;
+						}
+						if(place=='t') {
+							t=true;
+						}
+						if(place=='u') {
+							u=true;
+						}
+						if(place=='v') {
+							v=true;
+						}
+						if(place=='w') {
+							w=true;
+						}
+						if(place=='x') {
+							x=true;
+						}
+						if(place=='y') {
+							y=true;
+						}
+						if(place=='z') {
+							z=true;
+						}
+						
+						
+						
+						
+					}
+					if(a && b && c && d && e && f && g && h && i && j && k && l && m && n && o && p && q && r && s && t && u && v && w && x && y && z) {
+						return true;
+					}
+					
+					
+					return false;
+					
+				}
 	/**
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
 	 * 
