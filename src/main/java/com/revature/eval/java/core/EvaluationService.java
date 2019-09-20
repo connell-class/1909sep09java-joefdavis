@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
 import java.util.Date;
@@ -906,12 +908,15 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
-		Duration d = Duration.ofSeconds(1000000000);
-		Temporal backup = given.minus(d);
+		
+		LocalDate here = ((LocalDate) given).plusDays((long) 11574.07);
+		LocalDateTime local = here.atStartOfDay();
+//		Duration d = Duration.ofSeconds(1000000000);
+//		Temporal backup = given.minus(d);
 //	Temporal rightTime=given.minus((TemporalAmount) backup);
 //	Temporal rightTime=given;
 //	System.out.println(backup);
-		return backup;
+		return local;
 	}
 
 	/**
