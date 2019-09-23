@@ -908,15 +908,27 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
+//		
+		Duration d=Duration.ofSeconds(1000000000);
 		
-		LocalDate here = ((LocalDate) given).plusDays((long) 11574.07);
-		LocalDateTime local = here.atStartOfDay();
-//		Duration d = Duration.ofSeconds(1000000000);
-//		Temporal backup = given.minus(d);
-//	Temporal rightTime=given.minus((TemporalAmount) backup);
-//	Temporal rightTime=given;
-//	System.out.println(backup);
-		return local;
+		if(given instanceof LocalDate) {
+			LocalDateTime now=LocalDate.from(given).atStartOfDay();
+			now=now.plus(d);
+			return now;
+		}
+		else {
+			given.plus(d);
+		}
+//	
+//		Instant now = Instant.given;
+		
+//		
+		
+		
+		System.out.println("yeah");
+
+		return given;
+
 	}
 
 	/**
