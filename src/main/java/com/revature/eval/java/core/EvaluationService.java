@@ -342,18 +342,29 @@ public class EvaluationService {
 			if(t==end) {
 				return sortedList.size()-1;
 			}
-			
-			for(int i=1;i<sortedList.size()-1;i++) {
-				if(sortedList.get(i)==t) {
-					System.out.println("why are you not working right damn  " + i);
-					return i;
+			int size=sortedList.size();
+			int min=0;
+			int max=sortedList.size()-1;
+			int mid=(min+max)/2;
+			for(int i=1;i<size;i++) {
+				mid=(max+min)/2;
+				if(sortedList.get(mid)==t) {
+//					System.out.println("why are you not working right damn  " + i);
+					return mid;
+				}else if((int)t<(int)sortedList.get(mid)) {
+					max=mid-1;
+					
+				}else {
+					min=mid+1;
+					
 				}
+				
 				
 			}
 			
 //			int mid=sortedList.size()/2;
 			
-			return 0;
+			return mid;
 		}
 
 		public BinarySearch(List<T> sortedList) {
