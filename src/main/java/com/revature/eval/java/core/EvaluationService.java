@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAmount;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,12 +44,16 @@ public class EvaluationService {
 			b = phrase.charAt(i);
 
 			if (b == ' ' || b == '-') {
-				a = a + Character.toString(phrase.charAt(i + 1));
+//				a = a + Character.toString(phrase.charAt(i + 1));
+				b=phrase.charAt(i+1);
+				b=Character.toUpperCase(b);
+//				System.out.println(b);
+				a+=b;
 			}
 
 		}
-
-		return a;
+		
+		return a.trim();
 	}
 
 	/**
@@ -227,7 +232,7 @@ public class EvaluationService {
 		}
 
 		if (number.length() != 10) {
-			return null;
+			throw new IllegalArgumentException();
 		}
 		return number;
 	}
@@ -246,33 +251,47 @@ public class EvaluationService {
 
 		Map<String, Integer> map = new HashMap<>();
 		int count = 1;
-		boolean white = false;
+		String temp;
+		char place;
+		int begin=0;
+		int replace;
+//		boolean white = false;
 		for (int t = 0; t < string.length(); t++) {
-			if (string.charAt(t) == ' ') {
-//				System.out.println("space");
-				white = true;
-			}
-
-			if (white == true) {
-				String[] s = string.split(" ");
-				if (s.length > 1) {
-					for (int i = 0; i < string.length(); i++) {
-						count = 1;
-						for (int j = i + 1; j < string.length(); j++) {
-							if (s[i] == s[j] && i < j) {
-								count++;
-							}
-							map.put(s[i], count);
-						}
-
+			place=string.charAt(t);
+			if(place==' ' || !Character.isLetter(place)) {
+				temp=string.substring(begin,t);
+				if(string.charAt(begin)=='n' && !Character.isDigit(string.charAt(begin-1)))
+					if(string.charAt(begin-1)!=' ') {
+						temp=temp.substring(1);
 					}
+				begin=t+1;
+				if(!map.containsKey(temp)) {
+					map.put(temp, 1);
 				}
-			} else {
-				map.put(string, 1);
+				else {
+					replace=map.get(temp);
+					map.replace(temp, replace+1);
+				}
 			}
-
-			return map;
+			if(t==string.length()-1) {
+				temp=string.substring(begin,t+1);
+				if(string.charAt(begin)=='n' && !Character.isDigit(string.charAt(begin-1)))
+					if(string.charAt(begin-1)!=' ') {
+						temp=temp.substring(1);
+					}
+				if(!map.containsKey(temp)) {
+					map.put(temp, count);
+				}
+				else {
+					replace=map.get(temp);
+					map.replace(temp, replace+1);
+				}
+			}
+			
+			
 		}
+			map.remove("");
+		return map;
 	}
 
 	/**
@@ -315,6 +334,25 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
+			T begin=sortedList.get(0);
+			T end=sortedList.get(sortedList.size()-1);
+			if(t==begin) {
+				return 0;
+			}
+			if(t==end) {
+				return sortedList.size()-1;
+			}
+			
+			for(int i=1;i<sortedList.size()-1;i++) {
+				if(sortedList.get(i)==t) {
+					System.out.println("why are you not working right damn  " + i);
+					return i;
+				}
+				
+			}
+			
+//			int mid=sortedList.size()/2;
+			
 			return 0;
 		}
 
@@ -373,16 +411,19 @@ public class EvaluationService {
 //		for (int y=0;y<size;y++) {
 //			System.out.print(s[y]);
 //		}
-		if (white = true) {
+		
+		String begin="";
+		if (white) {
 			for (int i = 0; i < s.length; i++) {
 				vowel = false;
 				for (int j = 0; j < s[i].length(); j++) {
+//					begin+=s[i].substring(j,j+1);
 					if (s[i].substring(0, 2).equalsIgnoreCase("qu")) {
 						s[i] = s[i].substring(2) + "quay";
 						j = s[i].length();
 					} else if (s[i].substring(j, j + 1).equalsIgnoreCase("a")
 							|| s[i].substring(j, j + 1).equalsIgnoreCase("e")
-							|| s[i].substring(j, j + 1).equalsIgnoreCase("0")
+							|| s[i].substring(j, j + 1).equalsIgnoreCase("o")
 							|| s[i].substring(j, j + 1).equalsIgnoreCase("i")
 							|| s[i].substring(j, j + 1).equalsIgnoreCase("u")) {
 						vowel = true;
@@ -413,13 +454,15 @@ public class EvaluationService {
 
 			}
 		} else {
-
+			String b="";
 			for (int index = 0; index < string.length(); index++) {
+				b+=string.substring(index,index+1);
 				if (string.substring(index, index + 1).equalsIgnoreCase("a")
 						|| string.substring(index, index + 1).equalsIgnoreCase("e")
-						|| string.substring(index, index + 1).equalsIgnoreCase("0")
+						|| string.substring(index, index + 1).equalsIgnoreCase("o")
 						|| string.substring(index, index + 1).equalsIgnoreCase("i")
 						|| string.substring(index, index + 1).equalsIgnoreCase("u")) {
+					b=b.substring(0,b.length()-1);
 					if (string.substring(0, 2).equalsIgnoreCase("qu")) {
 						string = string.substring(2) + "quay";
 						index = string.length();
@@ -429,8 +472,7 @@ public class EvaluationService {
 					}
 
 					else {
-						part = s[index].substring(0, index);
-						string = string.substring(index) + part + end;
+						string=string.substring(index)+ b + "ay";
 						index = string.length();
 					}
 
@@ -439,7 +481,7 @@ public class EvaluationService {
 			}
 
 		}
-		return string;
+		return string.trim();
 
 	}
 
@@ -497,7 +539,48 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		List<Long> primes= new ArrayList<Long>();
+	
+		if(l==2) {
+			primes.add((long) 2);
+			return primes;
+		}
+//		if(l==3) {
+//			primes.add((long) 3);
+//			return primes;
+//		}
+//		long a=2;
+//		long b=3;
+//		if(a*a==l) {
+//			primes.add(a);
+//			primes.add(a);
+//			return primes;
+//		}
+//		if(b*b==l) {
+//			primes.add(b);
+//			primes.add(b);
+//			return primes;
+//		}
+		
+//		long factor=l;
+//		boolean prime=false;
+		for(long i=2;i<l;i++) {
+			
+			
+				 while(l%i == 0) {
+					 primes.add(i);
+			            l = l/i;
+			           
+			         }
+				}
+		if(l >2) {
+	        primes.add(l);
+	      }
+		
+		
+		
+		return primes;
 	}
 
 	/**
@@ -597,39 +680,32 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		if (i == 1) {
-			return 2;
-		}
-		if (i == 2) {
-			return 3;
-		}
-		if (i == 3) {
-			return 5;
-		}
-		if (i == 4) {
-			return 7;
-		}
-		if (i == 5) {
-			return 11;
-		}
+		//Davin gave me help with this one
+		if(i<1) throw new IllegalArgumentException();
+		int j;//this will be updated
+		int prime = 1; //this will be constantly updated but only after each prime
+		int counter = 0;
+		while(counter<i) {
+			prime++;
+			for (j = 2; j < 100000000; j++) {
+				//each number is checked if its a prime
+				if(prime%j==0) {
+					break;
+				}
+				
+			}
 
-		int prime = 0;
-		int counter = 5;
-		if (i > 5) {
-			for (int j = 12; j < 100000000; j++) {
-
-				if (j % 2 != 0 && j % 3 != 0 && j % 5 != 0 && j % 7 != 0 && j % 11 != 0) {
-					prime = j;
+//				
+			//before counter is updated, have to check if j=the new prime value
+			//then counter is updated
+				if (j == prime) {
 					counter++;
 				}
-				if (counter == i) {
-					return prime;
-				}
 
-			}
+			
 		}
-
-		return 0;
+		
+		return prime;
 	}
 
 	/**
@@ -669,28 +745,44 @@ public class EvaluationService {
 			char place;
 			String s = "";
 			int difference;
+			int count=0;
+			boolean as=false;
 			for (int i = 0; i < string.length(); i++) {
 				place = string.charAt(i);
-
+				
+				if(count%5==0 && count>0 && as==false ) {
+					s+=" ";
+					as=true;
+				}
 				if (Character.isLetter(place)) {
 					if (place >= 'a' && place <= 'z') {
 						difference = place - 97;
 						place = ((char) (122 - difference));
 						s += place;
+						count++;
+						as=false;
 
 					} else {
 						difference = place - 65;
 						place = ((char) (90 - difference));
 						s += place;
+						count++;
+						as=false;
 					}
 
-				} else {
+				} else if(Character.isDigit(place)){
 					s += place;
+					count++;
+					as=false;
 				}
+				else{
+				continue;
+				}
+				
 
 			}
-
-			return s;
+			s=s.toLowerCase();
+			return s.trim();
 		}
 
 		/**
@@ -707,32 +799,32 @@ public class EvaluationService {
 			int count = 0;
 			for (int i = 0; i < string.length(); i++) {
 				place = string.charAt(i);
-				if (count % 5 == 0) {
-					s += " ";
-				}
+				
 				if (Character.isLetter(place)) {
 					if (place >= 'a' && place <= 'z') {
 						difference = 122 - place;
 						place = ((char) (97 + difference));
 						s += place;
-						count++;
+//						count++;
 					} else {
 						difference = 90 - place;
 						place = ((char) (65 + difference));
 						s += place;
-						count++;
+//						count++;
 					}
 
-				} else {
-					count++;
-					s += place;
+				}else if(Character.isDigit(place)) {
+					s+=place;
+				}
+				
+				else {
+					continue;
 				}
 
 			}
 
 			return s;
-		}
-	}
+		}}
 
 	/**
 	 * 15. The ISBN-10 verification process is used to validate book identification
@@ -758,6 +850,7 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
+		char oneLet='X';
 		int sum = 0;
 		char place;
 		int count = 10;
@@ -770,13 +863,21 @@ public class EvaluationService {
 				sum += count * temp;
 				count--;
 			}
+//			if(Character.isLetter(place) && (place!='x' || place!='X')) {
+//				return false;
+//			}
 			if (Character.isLetter(place) && count == 1) {
+				oneLet=place;
 				sum += count * 10;
 				count--;
+				
 			}
 		}
 		// case not enough numbers
 		if (count != 0) {
+			return false;
+		}
+		if(oneLet!='X') {
 			return false;
 		}
 		// System.out.println(count);
@@ -917,7 +1018,7 @@ public class EvaluationService {
 			return now;
 		}
 		else {
-			given.plus(d);
+			given=given.plus(d);
 		}
 //	
 //		Instant now = Instant.given;
@@ -1016,9 +1117,9 @@ public class EvaluationService {
 			if (Character.isDigit(string.charAt(i))) {
 				num = Character.getNumericValue(string.charAt(i));
 				sum = sum + num;
-				System.out.print(num);
+//				System.out.print(num);
 			} else {
-				System.out.print(" ");
+//				System.out.print(" ");
 			}
 		}
 		if (sum % 10 == 0) {
@@ -1052,7 +1153,7 @@ public class EvaluationService {
 
 			if (Character.isDigit(place) && sec % 2 == 0) {
 				p = Character.getNumericValue(place);
-				System.out.print(p);
+//				System.out.print(p);
 				if (p * 2 > 9) {
 					p = p * 2;
 					twoDigs = Integer.toString(p);
@@ -1108,88 +1209,97 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		int j = 0;
-		int a = 0;
-		int b = 0;
-		int answer = 0;
-		String sub = "";
-		String num = "";
-		char place = ' ';
-		String function = null;
-		boolean isA = false;
-		boolean isB = false;
-		boolean func = false;
-		// for loop to read down the string
-		// while checking for numbers
-		// and the math function
-		for (int i = 0; i < string.length(); i++) {
-			j = i;
-			place = string.charAt(i);
-			sub = sub + place;
-			// check if number is negative
-			if (place == '-') {
-				num = num + place;
-			}
-			// checking for the first number
-			if (Character.isDigit(place) && isA == false) {
-				num = num + place;
-				while (Character.isDigit(string.charAt(j + 1))) {
-					num = num + string.charAt(j + 1);
-					j++;
+				int j = 0;
+				int a = 0;
+				int b = 0;
+				int answer = 0;
+				String sub = "";
+				String num = "";
+				char place = ' ';
+				String function = null;
+				boolean isA = false;
+				boolean isB = false;
+				boolean func = false;
+				// for loop to read down the string
+				// while checking for numbers
+				// and the math function
+				for (int i = 0; i < string.length(); i++) {
+					j = i;
+					place = string.charAt(i);
+					sub = sub + place;
+					// check if number is negative
+					if (place == '-') {
+						num = num + place;
+					}
+					// checking for the first number
+					if (Character.isDigit(place) && isA == false) {
+						num = num + place;
+						while (Character.isDigit(string.charAt(j + 1))) {
+							num = num + string.charAt(j + 1);
+							j++;
+						}
+						a = Integer.parseInt(num);
+						isA = true;
+						num = "";
+						System.out.println(a);
+//						System.out.println("aaaaa");
+						place = string.charAt(i + 1);
+					}
+//					System.out.println(func);
+
+					// checking for the second number
+					if (Character.isDigit(place) && isA == true   && func == true ) {
+						num = num + place;
+//						System.out.println("heeellllll");
+						while (Character.isDigit(string.charAt(j+1)) && isB == false) {
+							num = num + string.charAt(j + 1);
+							j++;
+						}
+						b = Integer.parseInt(num);
+						isB = true;
+//						System.out.println("b is ");
+//						System.out.println(b);
+						break;
+					}
+					// check if string matches the math function words
+
+					if ((place == 'd' || place == 'D') && (string.charAt(i + 1) == 'i' || string.charAt(i + 1) == 'I')) {
+						function = "/";
+						func = true;
+					System.out.println("divide");	
+					}
+					if ((place == 'p' || place == 'P') && (string.charAt(i + 1) == 'l' || string.charAt(i + 1) == 'L') &&  (string.charAt(i + 2) == 'u' || string.charAt(i + 2) == 'U')) {
+						function = "+";
+						func = true;
+						System.out.println("add");	
+					}
+					if ((place == 'm' || place == 'M') && (string.charAt(i + 1) == 'i' || string.charAt(i + 1) == 'I')) {
+						function = "-";
+						func = true;
+						System.out.println("minus");	
+					}
+					if ((place == 'm' || place == 'M') && (string.charAt(i + 1) == 'u' || string.charAt(i + 1) == 'U')) {
+						function = "*";
+						func = true;
+						System.out.println("multiply");
+					}
+					// add it all up
+
 				}
-				a = Integer.parseInt(num);
-				isA = true;
-				num = "";
-				System.out.println(a);
-				place = string.charAt(i + 1);
-			}
-
-			// checking for the second number
-			if (Character.isDigit(place) && isA == true && (i + 1 != string.length()) && isB == false && func == true) {
-				num = num + place;
-				while (Character.isDigit(string.charAt(j + 1)) && isB == false) {
-					num = num + string.charAt(j + 1);
-					j++;
+				if (function == "/") {
+					answer = a / b;
 				}
-				b = Integer.parseInt(num);
-				isB = true;
-				System.out.println(b);
-			}
-			// check if string matches the math function words
+				if (function == "+") {
+					answer = a + b;
+				}
+				if (function == "-") {
+					answer = a - b;
+				}
+				if (function == "*") {
+					answer = a * b;
+				}
 
-			if ((place == 'd' || place == 'D') && (string.charAt(i + 1) == 'i' || string.charAt(i + 1) == 'I')) {
-				function = "/";
-				func = true;
+				return answer;
 			}
-			if ((place == 'a' || place == 'A') && (string.charAt(i + 1) == 'd' || string.charAt(i + 1) == 'D')) {
-				function = "+";
-				func = true;
-			}
-			if ((place == 'S' || place == 's') && (string.charAt(i + 1) == 'u' || string.charAt(i + 1) == 'U')) {
-				function = "-";
-				func = true;
-			}
-			if ((place == 'm' || place == 'M') && (string.charAt(i + 1) == 'u' || string.charAt(i + 1) == 'U')) {
-				function = "*";
-				func = true;
-			}
-			// add it all up
-
-		}
-		if (function == "/") {
-			answer = a / b;
-		}
-		if (function == "+") {
-			answer = a + b;
-		}
-		if (function == "-") {
-			answer = a - b;
-		}
-		if (function == "*") {
-			answer = a * b;
-		}
-
-		return answer;
-	}
 
 }
